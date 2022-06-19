@@ -53,6 +53,7 @@ public class LoginView extends JFrame implements ActionListener{
 			String user_pw = jtf_id.getText();
 			// 오라클 서버에서 반환 값 담기
 			String result = ""; // 이름(1) or 0(비번이 틀림) or -1 (아이디가 존재하지 않음)
+			
 			LoginDao loginDao = new LoginDao(); // 이제 더이상 initDisplay 호출 안됨 (메인으로 옮겼기 때문)
 			// 사용자가 입력한 아이디와 비번을 Dao클래스의 login메소드에 파라미터로 넘김
 			result = loginDao.login(user_id, user_pw);

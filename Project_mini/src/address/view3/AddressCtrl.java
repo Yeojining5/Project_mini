@@ -21,21 +21,25 @@ public class AddressCtrl {
 		if (command.equals(_DEL)) {
 			DeleteAddrEty delEty = new DeleteAddrEty();
 			returnVO = delEty.delete(vo);
-		} else if (command.equals(_INS)) {
+		} 
+		else if (command.equals(_INS)) {
 			RegisterAddrEty insEty = new RegisterAddrEty();
 			returnVO = insEty.register(vo);
 			//insEty.insertAddress(vo);
-		} else if (command.equals(_MOD)) {
+		} 
+		else if (command.equals(_MOD)) {
 			ModifyAddrEty modEty = new ModifyAddrEty();
 			returnVO = modEty.modify(vo);
-		} else if (command.equals(_SEL)) {
+		} 
+		else if (command.equals(_SEL)) {
 			RetrieveAddrEty selEty = new RetrieveAddrEty();
 			returnVO = selEty.retrieve(vo);
-		} else
+		} 
+		else
 			throw new Exception("잘못된 Command명(" + command + ")입니다.");
 
 		return returnVO;
-	}
+	} /////////////////////////////////////////////////////////////
 
 	public AddressVO[] send() {
 		System.out.println("AddressCtrl send 호출 성공");

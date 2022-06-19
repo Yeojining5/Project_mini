@@ -1,6 +1,21 @@
 package address.view3;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Vector;
+
+
 public class RetrieveAddrEty {
+	
+	DBConnectionMgr 	dbMgr 	= new DBConnectionMgr();
+	Connection 			con 	= null;// 연결통로
+	PreparedStatement 	pstmt 	= null;// DML구문 전달하고 오라클에게 요청
+	ResultSet 			rs		= null;// 조회경우 커서를 조작 필요
+	
 	/***************************************************************************
 	 * 회원정보 중 상세보기 구현 - 1건 조회
 	 * SELECT id, name, address, DECODE(gender,'1','남','여') as "성별"
@@ -26,8 +41,42 @@ public class RetrieveAddrEty {
 	public AddressVO[] retrieve() {
 		System.out.println("RetrieveAddrEty retrieve() 호출 성공");		
 		AddressVO[] vos = null;
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT id, name, address, DECODE(gender,'1','남','여')    ");
+		sql.append("        , relationship, comments, registedate, birthday   ");
+		sql.append("  FROM mkaddrtb                                           ");
+		
+		try {
+			con = dbMgr.getConnection();
+			pstmt = con.prepareStatement(sql.toString());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				//vos = new AddressVO[8];
+				vos = new AddressVO[7];
+				int i = 0;
+				vos[i++].setId(rs.getInt("id"));
+				vos[i++].setName(rs.getString("name"));
+				vos[i++].setAddress(rs.getString("address"));
+				vos[i++].setGender(rs.getString("gender"));
+				vos[i++].setRelationship(rs.getString("relationship"));
+				vos[i++].setComments(rs.getString("comments"));
+				vos[i++].setRegistedate(rs.getString("registedate"));
+				vos[i++].setBirthday(rs.getString("birthday"));
+				System.out.println(vos);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBConnectionMgr.freeConnection(rs, pstmt, con);
+		}
+	
 		return vos;
-	}
+	}////////////////////////////////////// end of public AddressVO[] retrieve()
+	
+	
 }
 
 /*

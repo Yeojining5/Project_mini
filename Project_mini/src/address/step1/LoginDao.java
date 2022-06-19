@@ -1,5 +1,5 @@
 package address.step1;
-
+// JDBC API 공통코드 클래스를 따로 설계함 = 외부 클래스에서 인스턴스화 하여 호출 사용
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -382,14 +382,19 @@ public class AddressBook extends JFrame {
 		JOptionPane.showMessageDialog(this, "주소록 데모 프로그램 1.0","About", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	// 전체 데이터를 다시 조회합니다.
+	// 전체 데이터를 다시 조회합니다. (새로고침이 일어났을 때 화면을 갱신)
 	public void refreshData() {
 		System.out.println("전체 데이터를 다시 조회합니다.");
 		AddressVO vo = new AddressVO();
 		vo.setCommand("selectall");
-		ctrl = new AddressCtrl(vo);	
+		ctrl = new AddressCtrl(vo);	// 전체조회의 경우 ROW의 숫자가 여러개 이므로 배열에 담음
 		// Controller에서 넘겨 받은 전체 데이터를 테이블에 셋팅합니다.
 		vos = ctrl.send();	
+		
+		while(myTableModel.getRowCount() > 0) { //기존에 조회된 결과 즉 목록을 삭제하기
+			myTableModel.removeRow(0); // 파라미터에 0을 주어서 테이블의 인덱스가 바뀌는 문제를 해결함
+			}
+		
 		if(vos == null || vos.length == 0) {
 			vos = new AddressVO[2];	
 			AddressVO rvo = new AddressVO("이순신","서울시 마포구 공덕동","010-555-6677","1"
