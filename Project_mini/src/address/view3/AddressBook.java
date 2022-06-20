@@ -1,13 +1,36 @@
 package address.view3;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public class AddressBook extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -128,7 +151,7 @@ public class AddressBook extends JFrame {
         menuItemDetail.setText("상세조회");
         menuItemDetail.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                System.out.println("조회 메뉴");
+                System.out.println("상세조회 메뉴");
                 detailActionPerformed();
             }
         });
@@ -323,7 +346,9 @@ public class AddressBook extends JFrame {
 
 	// 조회 메뉴나 조회 아이콘 선택시 작업을 정의합니다.
 	private void detailActionPerformed() {
-		System.out.println("상세조회 구현");		
+		System.out.println("상세조회 구현");
+		mDialog.set("상세조회", true, null, abook);
+		mDialog.setVisible(true);
 	}
 
 	// 입력 메뉴나 입력 아이콘 선택시 작업을 정의합니다.
@@ -391,18 +416,19 @@ public class AddressBook extends JFrame {
 		// Controller에서 넘겨 받은 전체 데이터를 테이블에 셋팅합니다.
 		vos = ctrl.send();	
 		
+		
 		while(myTableModel.getRowCount() > 0) { //기존에 조회된 결과 즉 목록을 삭제하기
 			myTableModel.removeRow(0); // 파라미터에 0을 주어서 테이블의 인덱스가 바뀌는 문제를 해결함
 			}
 		
-		if(vos == null || vos.length == 0) {
-			vos = new AddressVO[2];	
-			AddressVO rvo = new AddressVO("이순신","서울시 마포구 공덕동","010-555-6677","1"
-					                     ,"고교동창","1990-05-28","Back-End개발자","2022-03-15",1);
-			vos[0] = rvo;
-			rvo = new AddressVO("강감찬","서울시 영등포구 당산동","010-777-6677","1"
-                    ,"대학동창","1992-01-28","Back-End개발자","2022-01-25",2);
-			vos[1] = rvo;
+//		if(vos == null || vos.length == 0) {
+//			vos = new AddressVO[2];	
+//			AddressVO rvo = new AddressVO("이순신","서울시 마포구 공덕동","010-555-6677","1"
+//					                     ,"고교동창","1990-05-28","Back-End개발자","2022-03-15",1);
+//			vos[0] = rvo;
+//			rvo = new AddressVO("강감찬","서울시 영등포구 당산동","010-777-6677","1"
+//                    ,"대학동창","1992-01-28","Back-End개발자","2022-01-25",2);
+//			vos[1] = rvo;
 			for (int i = 0; i < vos.length; i++) {
 				Vector<Object> oneRow = new Vector<>();
 				oneRow.addElement(vos[i].getId());
@@ -411,8 +437,9 @@ public class AddressBook extends JFrame {
 				oneRow.addElement(vos[i].getTelephone());			
 				myTableModel.addRow(oneRow);
 			}
-		}
-	}
+//		}
+		
+	}/////////////////////////////// end of refreshData()
 
 }
 

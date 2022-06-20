@@ -3,9 +3,6 @@ package address.view3;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Vector;
 
 
@@ -18,61 +15,92 @@ public class RetrieveAddrEty {
 	
 	/***************************************************************************
 	 * 회원정보 중 상세보기 구현 - 1건 조회
-	 * SELECT id, name, address, DECODE(gender,'1','남','여') as "성별"
-            , relationship, comments, registedate, birthday
+	 * SELECT name, address, telephone, DECODE(gender,'1','남','여')
+             , relationship, birthday, comments, registedate, id 
          FROM mkaddrtb
-        WHERE id = 5
+        WHERE id = ?
 	 * @param vo : 사용자가 선택한 값
 	 * @return AddressVO : 조회 결과 1건을 담음
 	 **************************************************************************/
 	public AddressVO retrieve(AddressVO vo) {
 		System.out.println("RetrieveAddrEty retrieve(AddressVO vo) 호출 성공");
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT name, address, telephone, DECODE(gender,'1','남','여') ");
+		sql.append("        , relationship, birthday, comments, registedate, id   ");
+		sql.append("  FROM mkaddrtb                                               ");
+		sql.append(" WHERE id = ?                                                 "); 
+		
 		AddressVO rVO = null;
+		int id = vo.getId();
+		
+		try {
+			con = dbMgr.getConnection();
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				rVO = new AddressVO();
+				rVO.setName(rs.getString("name"));
+				rVO.setAddress(rs.getString("address"));
+				rVO.setTelephone(rs.getString("telephone"));
+				rVO.setGender(rs.getString("gender"));
+				rVO.setRelationship(rs.getString("relationship"));
+				rVO.setBirthday(rs.getString("birthday"));
+				rVO.setComments(rs.getString("comments"));
+				rVO.setRegistedate(rs.getString("registedate"));
+				rVO.setId(rs.getInt("id"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBConnectionMgr.freeConnection(rs, pstmt, con);
+		}
+		
 		return rVO;
 	}
+	
+	
+	
 	/***************************************************************************
 	 * 회원 목록 보기 구현 - n건 조회
-	 * SELECT id, name, address, DECODE(gender,'1','남','여') as "성별"
-            , relationship, comments, registedate, birthday
+	 * SELECT name, address, telephone, DECODE(gender,'1','남','여')
+              , relationship, birthday, comments, registedate, id 
          FROM mkaddrtb
-	 * @param vo : 사용자가 선택한 값
-	 * @return AddressVO : 조회 결과 1건을 담음
+	 * @return AddressVO[] : 조회 결과 n건을 담음
 	 **************************************************************************/
 	public AddressVO[] retrieve() {
 		System.out.println("RetrieveAddrEty retrieve() 호출 성공");		
 		AddressVO[] vos = null;
+		Vector v = new Vector(1,1);
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT id, name, address, DECODE(gender,'1','남','여')    ");
-		sql.append("        , relationship, comments, registedate, birthday   ");
-		sql.append("  FROM mkaddrtb                                           ");
+		sql.append("SELECT name, address, telephone, DECODE(gender,'1','남','여')  ");
+		sql.append("        , relationship, birthday, comments, registedate, id    ");
+		sql.append("  FROM mkaddrtb                                                ");
+		sql.append("  ORDER BY id desc                                             ");
 		
 		try {
 			con = dbMgr.getConnection();
 			pstmt = con.prepareStatement(sql.toString());
 			rs = pstmt.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				//vos = new AddressVO[8];
-				vos = new AddressVO[7];
-				int i = 0;
-				vos[i++].setId(rs.getInt("id"));
-				vos[i++].setName(rs.getString("name"));
-				vos[i++].setAddress(rs.getString("address"));
-				vos[i++].setGender(rs.getString("gender"));
-				vos[i++].setRelationship(rs.getString("relationship"));
-				vos[i++].setComments(rs.getString("comments"));
-				vos[i++].setRegistedate(rs.getString("registedate"));
-				vos[i++].setBirthday(rs.getString("birthday"));
-				System.out.println(vos);
+				AddressVO vo = new AddressVO(rs.getString(1), rs.getString(2), rs.getString(3)
+							      , rs.getString(4), rs.getString(5), rs.getString(6)
+								  , rs.getString(7), rs.getString(8), rs.getInt(9));
+				v.addElement(vo);
 			}
+			vos = new AddressVO[v.size()];
+			v.copyInto(vos);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBConnectionMgr.freeConnection(rs, pstmt, con);
 		}
-	
 		return vos;
 	}////////////////////////////////////// end of public AddressVO[] retrieve()
 	

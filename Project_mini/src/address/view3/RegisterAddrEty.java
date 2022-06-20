@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 public class RegisterAddrEty {
 	DBConnectionMgr 	dbMgr	= new DBConnectionMgr();
 	Connection 			con		= null;
@@ -30,14 +31,16 @@ public class RegisterAddrEty {
 		try {
 			con = dbMgr.getConnection();
 			ps = con.prepareStatement(sql.toString());
-			ps.setString(1, vo.getName());
-			ps.setString(2, vo.getAddress());
-			ps.setString(3, vo.getTelephone());
-			ps.setString(4, vo.getGender());
-			ps.setString(5, vo.getRelationship());
-			ps.setString(6, vo.getBirthday());
-			ps.setString(7, vo.getComments());
-			ps.setString(8, vo.getRegistedate());
+			int i =1;
+			ps.setString(i++, vo.getName());
+			ps.setString(i++, vo.getAddress());
+			ps.setString(i++, vo.getTelephone());
+			ps.setString(i++, vo.getGender());
+			ps.setString(i++, vo.getRelationship());
+			ps.setString(i++, vo.getBirthday());
+			ps.setString(i++, vo.getComments());
+			ps.setString(i++, vo.getRegistedate());
+			
 			if(ps.executeUpdate() < 1) {
 				String msg = "데이터 입력에 실패했습니다.";
 				System.out.println(msg);
@@ -49,11 +52,8 @@ public class RegisterAddrEty {
 			String msg = "데이터 입력에 실패했습니다.";
 			System.out.println(msg + "\r\n" + e);
 		} finally {
-			try {
-				if(ps != null) ps.close();
-				if(con != null) con.close();
-			} catch(SQLException e) {}
-		}		
+				DBConnectionMgr.freeConnection(ps, con);
+		} 
 		return vo;
 	}////////////////////// end of register
 

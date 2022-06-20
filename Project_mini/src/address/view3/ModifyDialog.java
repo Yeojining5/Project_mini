@@ -200,24 +200,40 @@ class ModifyDialog extends JDialog {
 		txtComment.setEditable(e);
 	}
 
-	// 확인버튼 선택시 작업을 정의합니다.
+	/////////////////////////////////////////////// 확인버튼 선택시 작업을 정의합니다.
   	private void btnOkayActionPerformed(ActionEvent evt) {
-  		if(getName().trim().length() == 0) {
+  		if(getName().trim().length() == 0) { ///////// 이름(필수입력)
   			JOptionPane.showMessageDialog(this, "이름을 입력하세요.", "Error",
   				JOptionPane.ERROR_MESSAGE);
   			return;
   		}
 		isCancel= false;
-		//수정화면에서 확인버튼을 눌렀을 때와 입력화면에서 확인 버튼을 눌렀을 때
-		//처리하기
+		//수정화면에서 확인버튼을 눌렀을 때와 입력화면에서 확인 버튼을 눌렀을 때 처리하기
 		//아이디가 존재하면 수정 모드, 그렇지 않으면 입력 모드로 처리한다.
-		if(avo !=null){
-			JOptionPane.showMessageDialog(this, "수정하기에서 확인 입니다.","INFO", JOptionPane.INFORMATION_MESSAGE);		
+		// public AddressVO avo = null;
+		if(avo !=null){ //////////////////////////////// 아이디가 null이 아님 = 존재하면 수정 모드
+			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);		
 			try{
 				AddressVO vo = new AddressVO();	
 				vo.setCommand("update");
+				
+				// 다이얼로그에 입력한 값 텍스트필드 메서드로 읽어오기
+				vo.setName(getName());
+				vo.setAddress(getAddress());
+				vo.setTelephone(getTel());
+				vo.setGender(getGender());
+				vo.setRelationship(getRelationShip());
+				vo.setBirthday(getBirthDay());
+				vo.setComments(getComments());
+				vo.setRegistedate(getRegDate());
+				vo.setId(avo.getId()); ///////////////// 중요!
+				
 				AddressCtrl ctrl = new AddressCtrl(vo);
 				ctrl.send(vo);
+				
+				if(abook != null) {
+					abook.refreshData(); // 수정이 성공하면 AddressBook 클래스의 새로고침(전체조회) 메소드 호출
+				}
 			}catch(Exception e){
 				JOptionPane.showMessageDialog(this, "수정중 에러가 발생했습니다." + e,
 						"Error", JOptionPane.ERROR_MESSAGE);				
@@ -225,13 +241,27 @@ class ModifyDialog extends JDialog {
 		/*
 		 * 아이디가 0보다 큰값이 아니면 입력모드 이다.	
 		 */
-		}else{
+		}else{ //////////////////////////////////////// 아이디가 null 존재하지 않으면 입력 모드
 			try {
-				JOptionPane.showMessageDialog(this, "입력하기에서 확인 입니다.","INFO", JOptionPane.INFORMATION_MESSAGE);		
+				JOptionPane.showMessageDialog(this, "입력이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);		
 				AddressVO vo = new AddressVO();	
 				vo.setCommand("insert");
+				
+				// 다이얼로그에 입력한 값 텍스트필드 메서드로 읽어오기
+				vo.setName(getName());
+				vo.setAddress(getAddress());
+				vo.setTelephone(getTel());
+				vo.setGender(getGender());
+				vo.setRelationship(getRelationShip());
+				vo.setBirthday(getBirthDay());
+				vo.setComments(getComments());
+				vo.setRegistedate(getRegDate());
+				
 				AddressCtrl ctrl = new AddressCtrl(vo);
-				ctrl.send(vo);			
+				ctrl.send(vo);
+				
+				abook.refreshData(); // 입력이 성공하면 AddressBook 클래스의 새로고침(전체조회) 메소드 호출
+							
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "입력중 에러가 발생했습니다." + e,
 					"Error", JOptionPane.ERROR_MESSAGE);
@@ -281,6 +311,8 @@ class ModifyDialog extends JDialog {
 	public void setRelationShip(String strRelation) { txtRelationShip.setText(strRelation); }
 	public String getBirthDay() { return txtBirthDay.getText(); }
 	public void setBirthDay(String strBirth) { 	txtBirthDay.setText(strBirth); }
+	public String getComments() { return txtComment.getText(); }
+	public void setComments(String strCom) { 	txtComment.setText(strCom); }
 	public void setRegDate(String strReg) { txtRegDate.setText(strReg); }
 	public String getGender() {
 		if (comboGender.getSelectedItem().equals("남자")) return "1";
