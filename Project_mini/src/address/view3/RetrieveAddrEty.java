@@ -41,15 +41,15 @@ public class RetrieveAddrEty {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				rVO = new AddressVO();
-				rVO.setName(rs.getString("name"));
-				rVO.setAddress(rs.getString("address"));
-				rVO.setTelephone(rs.getString("telephone"));
-				rVO.setGender(rs.getString("gender"));
-				rVO.setRelationship(rs.getString("relationship"));
-				rVO.setBirthday(rs.getString("birthday"));
-				rVO.setComments(rs.getString("comments"));
-				rVO.setRegistedate(rs.getString("registedate"));
-				rVO.setId(rs.getInt("id"));
+				rVO.setName(rs.getString(1));
+				rVO.setAddress(rs.getString(2));
+				rVO.setTelephone(rs.getString(3));
+				rVO.setGender(rs.getString(4));
+				rVO.setRelationship(rs.getString(5));
+				rVO.setBirthday(rs.getString(6));
+				rVO.setComments(rs.getString(7));
+				rVO.setRegistedate(rs.getString(8));
+				rVO.setId(rs.getInt(9));
 			}
 
 		} catch (Exception e) {

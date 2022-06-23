@@ -349,7 +349,7 @@ public class AddressBook extends JFrame {
 		}
 	}
 
-	// 조회 메뉴나 조회 아이콘 선택시 작업을 정의합니다.
+	//////////// 상세조회 메뉴나 상세조회 아이콘 선택시 작업을 정의합니다.
 	private void detailActionPerformed() {
 		System.out.println("상세조회 구현");
 		
@@ -373,10 +373,17 @@ public class AddressBook extends JFrame {
 						newVo = new AddressVO(vos[i].getName(),vos[i].getAddress(),vos[i].getTelephone()
 								             ,vos[i].getGender(),vos[i].getRelationship(),vos[i].getBirthday()
 								             ,vos[i].getComments(),vos[i].getRegistedate(), vos[i].getId());
+						newVo.setCommand("select");
 					}
 				}
-				mDialog.set("상세조회", true, null, abook);
+				ctrl = new AddressCtrl(newVo);
+				ctrl.send(newVo);
+				
+				// public void set(String title, boolean editable, AddressVO vo, AddressBook abook)
+				// 상세 조회는 조회만 가능하도록 editable을 false로 준다.
+				mDialog.set("상세조회", false, newVo, abook); 
 				mDialog.setVisible(true);
+				
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "데이터를 가져오는 중 발생했습니다."+e.toString(),"Error", JOptionPane.ERROR_MESSAGE);
 			}
