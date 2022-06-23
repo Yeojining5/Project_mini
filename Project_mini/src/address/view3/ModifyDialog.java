@@ -2,6 +2,9 @@ package address.view3;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.*;
 
 
@@ -40,6 +43,7 @@ class ModifyDialog extends JDialog {
 	public AddressVO avo = null;
 	public static AddressBook abook = null;
 	private boolean isCancel;
+	
 	// 생성자는 컴포넌트들을 초기화하는 작업만 합니다.
 	public ModifyDialog(){
 		
@@ -87,7 +91,7 @@ class ModifyDialog extends JDialog {
 		String [] genderList= {"남자", "여자"};
 		comboGender = new JComboBox(genderList);
 
-		// 버튼을 정의합니다.
+		/////////////////// 확인버튼
 		btnOk= new JButton("확인");
 		btnOk.setFont(font);
 		btnOk.addActionListener(new ActionListener() {
@@ -96,7 +100,8 @@ class ModifyDialog extends JDialog {
                 btnOkayActionPerformed(evt);
             }
         });
-
+		
+		/////////////////// 취소버튼
 		btnCancel = new JButton("취소");
 		btnCancel.setFont(font);
 		btnCancel.addActionListener(new ActionListener() {
@@ -210,7 +215,7 @@ class ModifyDialog extends JDialog {
 		isCancel= false;
 		//수정화면에서 확인버튼을 눌렀을 때와 입력화면에서 확인 버튼을 눌렀을 때 처리하기
 		//아이디가 존재하면 수정 모드, 그렇지 않으면 입력 모드로 처리한다.
-		// public AddressVO avo = null;
+		// public AddressVO avo = null; // AddressBook에서 전달받은 avo
 		if(avo !=null){ //////////////////////////////// 아이디가 null이 아님 = 존재하면 수정 모드
 			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);		
 			try{
@@ -297,7 +302,7 @@ class ModifyDialog extends JDialog {
 	// 취소버튼 선택시 작업을 정의합니다.
 	private void btnCancelActionPerformed(ActionEvent evt) {
 		isCancel= true;	
-		dispose();
+		dispose();  // 창닫기
 	}
 
 	// 각 컬럼의 값들을 설정하거나 읽어오는 getter/setter 메쏘드입니다.
@@ -313,7 +318,10 @@ class ModifyDialog extends JDialog {
 	public void setBirthDay(String strBirth) { 	txtBirthDay.setText(strBirth); }
 	public String getComments() { return txtComment.getText(); }
 	public void setComments(String strCom) { 	txtComment.setText(strCom); }
+	
+	public String getRegDate() { return txtRegDate.getText(); }	
 	public void setRegDate(String strReg) { txtRegDate.setText(strReg); }
+	
 	public String getGender() {
 		if (comboGender.getSelectedItem().equals("남자")) return "1";
 		else return "2";
@@ -325,6 +333,6 @@ class ModifyDialog extends JDialog {
 	}
 	public String getComment() { return txtComment.getText(); }
 	public void setComment(String strComment) { txtComment.setText(strComment); }
-	public String getRegDate() { return txtRegDate.getText(); }
+
 
 }

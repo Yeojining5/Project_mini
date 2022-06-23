@@ -70,6 +70,8 @@ public class AddressBook extends JFrame {
 	private AddressCtrl ctrl;
 	public static AddressBook abook = null;
 	AddressVO [] vos = null;
+	
+	
 	// 메인 메쏘드는 AddressBook의 인스턴스를 생성하고 보여주는 일만 합니다.
     public static void main(String args[]) {
     	JFrame.setDefaultLookAndFeelDecorated(true);
@@ -121,7 +123,7 @@ public class AddressBook extends JFrame {
         jScrollPane1 = new JScrollPane();
         table = new JTable(myTableModel);
         JTableHeader jth = new JTableHeader();
-        jScrollPane1.getViewport().setBackground(Color.black);
+        jScrollPane1.getViewport().setBackground(Color.white);
 
 		labelTimer = new JLabel("현재 시간");
 		labelTimer.setFont(font);
@@ -278,6 +280,7 @@ public class AddressBook extends JFrame {
 		btnUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
             	System.out.println("수정 아이콘");
+            	updateActionPerformed();
             }
         });
         toolbar.add(btnUpdate);
@@ -296,11 +299,13 @@ public class AddressBook extends JFrame {
         getContentPane().add(toolbar, java.awt.BorderLayout.NORTH);
 
         // 데이터 리스트가 조회될 테이블을 설정합니다.
+        table.setSelectionBackground(Color.YELLOW); // 테이블 데이터 선택 시 색 변하게 하기
+        table.setSelectionForeground(Color.BLUE); // 테이블 데이터 선택 시 글자색 변하게 하기
         table.setFont(font);
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() >= 2) {
-					System.out.println("데이타 더블클릭");
+					System.out.println("데이터 더블클릭"); /////////////////////////////// 더블클릭 시 상세조회 호출
 					detailActionPerformed();
 				}
 			}
@@ -347,27 +352,14 @@ public class AddressBook extends JFrame {
 	// 조회 메뉴나 조회 아이콘 선택시 작업을 정의합니다.
 	private void detailActionPerformed() {
 		System.out.println("상세조회 구현");
-		mDialog.set("상세조회", true, null, abook);
-		mDialog.setVisible(true);
-	}
-
-	// 입력 메뉴나 입력 아이콘 선택시 작업을 정의합니다.
-	private void addActionPerformed(ActionEvent evt) {
-		System.out.println("입력하기");	
-		mDialog.set("입력", true, null,abook);
-		mDialog.setVisible(true);
-	}
-
-	// 수정 메뉴나 수정 아이콘 선택시 작업을 정의합니다.
-	public void updateActionPerformed() {
-		System.out.println("수정하기");
+		
 		int index[] = table.getSelectedRows();
 		AddressVO vo = new AddressVO();
 		if(index.length == 0) {
-			JOptionPane.showMessageDialog(this, "수정할 데이터를 선택하세요...", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "상세 조회할 데이터를 선택하세요.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else if(index.length > 1) {
-			JOptionPane.showMessageDialog(this, "데이터를 한건만 선택하세요...", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "데이터를 한건만 선택하세요.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else {
 			try {
@@ -383,6 +375,46 @@ public class AddressBook extends JFrame {
 								             ,vos[i].getComments(),vos[i].getRegistedate(), vos[i].getId());
 					}
 				}
+				mDialog.set("상세조회", true, null, abook);
+				mDialog.setVisible(true);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(this, "데이터를 가져오는 중 발생했습니다."+e.toString(),"Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	// 입력 메뉴나 입력 아이콘 선택시 작업을 정의합니다.
+	private void addActionPerformed(ActionEvent evt) {
+		System.out.println("입력하기");	
+		mDialog.set("입력", true, null,abook);
+		mDialog.setVisible(true);
+	}
+
+	// 수정 메뉴나 수정 아이콘 선택시 작업을 정의합니다.
+	public void updateActionPerformed() {
+		System.out.println("수정하기");
+		int index[] = table.getSelectedRows();
+		AddressVO vo = new AddressVO();
+		if(index.length == 0) {
+			JOptionPane.showMessageDialog(this, "수정할 데이터를 선택하세요.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		} else if(index.length > 1) {
+			JOptionPane.showMessageDialog(this, "데이터를 한건만 선택하세요.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		} else {
+			try {
+				// 테이블에서 선택된 컬럼의 id를 읽어옵니다.
+//				Integer id= (Integer)myTableModel.getValueAt(index[0], 0);
+				Integer id = Integer.parseInt
+				(myTableModel.getValueAt(index[0], 0).toString());				
+				AddressVO newVo = null;
+				for(int i=1;i<vos.length;++i) {
+					if(id == vos[i].getId()) {
+						newVo = new AddressVO(vos[i].getName(),vos[i].getAddress(),vos[i].getTelephone(),vos[i].getGender()
+								             ,vos[i].getRelationship(),vos[i].getBirthday(),vos[i].getComments()
+								             ,vos[i].getRegistedate(), vos[i].getId());
+					}
+				}
 				mDialog.set("수정", true, newVo, abook);
 				mDialog.setVisible(true);
 			} catch (Exception e) {
@@ -394,6 +426,39 @@ public class AddressBook extends JFrame {
 	// 삭제 메뉴나 삭제 아이콘 선택시 작업을 정의합니다.
 	private void deleteActionPerformed() {
 		System.out.println("삭제하기");
+		int index[] = table.getSelectedRows();
+		AddressVO vo = new AddressVO();
+		if(index.length == 0) {
+			JOptionPane.showMessageDialog(this, "삭제할 데이터를 선택하세요.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		} else if(index.length > 1) {
+			JOptionPane.showMessageDialog(this, "데이터를 한건만 선택하세요.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		} else {
+			try {
+				JOptionPane.showMessageDialog(this, "선택한 데이터를 삭제하시겠습니까?","INFO", JOptionPane.INFORMATION_MESSAGE);
+				// 테이블에서 선택된 컬럼의 id를 읽어옵니다.
+				Integer id = Integer.parseInt
+				(myTableModel.getValueAt(index[0], 0).toString());				
+				AddressVO newVo = null;
+				for(int i=0;i<vos.length;i++) {  //AddressVO [] vos
+					if(id == vos[i].getId()) {
+						newVo = new AddressVO(vos[i].getName(),vos[i].getAddress(),vos[i].getTelephone()
+								             ,vos[i].getGender(),vos[i].getRelationship(),vos[i].getBirthday()
+								             ,vos[i].getComments(),vos[i].getRegistedate(), vos[i].getId());
+						newVo.setCommand("delete");
+					}
+				}
+				ctrl = new AddressCtrl(newVo);
+				ctrl.send(newVo);
+				
+				refreshData(); // 삭제 성공하면 새로고침(전체조회) 메소드 호출
+				
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(this, "데이터를 가져오는 중 발생했습니다."+e.toString(),"Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}		
+		
 	}
 
 	// 종료 메뉴 선택시 작업을 정의합니다.
