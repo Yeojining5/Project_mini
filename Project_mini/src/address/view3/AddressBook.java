@@ -498,6 +498,7 @@ public class AddressBook extends JFrame {
 //			AddressVO rvo = new AddressVO("이순신","서울시 마포구 공덕동","010-555-6677","1"
 //					                     ,"고교동창","1990-05-28","Back-End개발자","2022-03-15",1);
 //			vos[0] = rvo;
+		
 //			rvo = new AddressVO("강감찬","서울시 영등포구 당산동","010-777-6677","1"
 //                    ,"대학동창","1992-01-28","Back-End개발자","2022-01-25",2);
 //			vos[1] = rvo;

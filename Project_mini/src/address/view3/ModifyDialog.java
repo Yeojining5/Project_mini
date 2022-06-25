@@ -2,8 +2,6 @@ package address.view3;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import javax.swing.*;
 
@@ -39,10 +37,15 @@ class ModifyDialog extends JDialog {
 
 	private JButton btnOk;
 	private JButton btnCancel;
+	private JButton	btnSearch;
 
 	public AddressVO avo = null;
-	public static AddressBook abook = null;
+	AddressBook abook = null;
 	private boolean isCancel;
+	
+	// AddressSearch 클래스에 ModifyDialog dialog를 파라미터로 받는 생성자가 존재함 > this사용 
+	AddressSearch search = new AddressSearch(this);
+
 	
 	// 생성자는 컴포넌트들을 초기화하는 작업만 합니다.
 	public ModifyDialog(){
@@ -110,6 +113,18 @@ class ModifyDialog extends JDialog {
 				btnCancelActionPerformed(evt);
 			}
 		});
+		
+		/////////////////// 주소찾기 버튼
+		btnSearch = new JButton("주소찾기");
+		btnSearch.setFont(font);
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				System.out.println("주소찾기 버튼");
+				btnSearchActionPerformed(evt);
+			}
+		});
+		
+		
 
 		panel = new JPanel();
 //컴넌트들의 위치를 정해줍니다.
@@ -120,6 +135,7 @@ class ModifyDialog extends JDialog {
 
 		labelAddr.setBounds(20, 45, 100,20);
 		txtAddress.setBounds(120,45, 150,20);
+		btnSearch.setBounds(280, 45, 90, 20); /////////
 
 		labelTel.setBounds(20,70, 100,20);
 		txtTel.setBounds(120,70, 150, 20);
@@ -146,6 +162,7 @@ class ModifyDialog extends JDialog {
 		panel.add(txtName);
 		panel.add(labelAddr);
 		panel.add(txtAddress);
+		panel.add(btnSearch);///
 		panel.add(labelTel);
 		panel.add(txtTel);
 		panel.add(labelRel);
@@ -303,6 +320,13 @@ class ModifyDialog extends JDialog {
 	private void btnCancelActionPerformed(ActionEvent evt) {
 		isCancel= true;	
 		dispose();  // 창닫기
+	}
+	
+	private void btnSearchActionPerformed(ActionEvent evt) {
+		Object obj = evt.getSource();
+		if(obj == btnSearch) {
+		search.initDisplay();
+		}
 	}
 
 	// 각 컬럼의 값들을 설정하거나 읽어오는 getter/setter 메쏘드입니다.
