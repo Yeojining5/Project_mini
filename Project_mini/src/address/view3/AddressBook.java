@@ -494,6 +494,17 @@ public class AddressBook extends JFrame {
 			myTableModel.removeRow(0); // 파라미터에 0을 주어서 테이블의 인덱스가 바뀌는 문제를 해결함
 			}
 		
+			for (int i = 0; i < vos.length; i++) {
+				Vector<Object> oneRow = new Vector<>();
+				oneRow.addElement(vos[i].getId());
+				oneRow.addElement(vos[i].getName());
+				oneRow.addElement(vos[i].getAddress());
+				oneRow.addElement(vos[i].getTelephone());			
+				myTableModel.addRow(oneRow);
+				}
+		}/////////////////////////////// end of refreshData()
+	}
+
 //		if(vos == null || vos.length == 0) {
 //			vos = new AddressVO[2];	
 //			AddressVO rvo = new AddressVO("이순신","서울시 마포구 공덕동","010-555-6677","1"
@@ -503,19 +514,9 @@ public class AddressBook extends JFrame {
 //			rvo = new AddressVO("강감찬","서울시 영등포구 당산동","010-777-6677","1"
 //                    ,"대학동창","1992-01-28","Back-End개발자","2022-01-25",2);
 //			vos[1] = rvo;
-			for (int i = 0; i < vos.length; i++) {
-				Vector<Object> oneRow = new Vector<>();
-				oneRow.addElement(vos[i].getId());
-				oneRow.addElement(vos[i].getName());
-				oneRow.addElement(vos[i].getAddress());
-				oneRow.addElement(vos[i].getTelephone());			
-				myTableModel.addRow(oneRow);
-			}
+			
 //		}
-		
-	}/////////////////////////////// end of refreshData()
 
-}
 
 // 데이터를 보여줄 테이블의 실제 데이터를 관리하는 클래스입니다.
 class MyTableModel extends DefaultTableModel {

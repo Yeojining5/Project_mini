@@ -46,8 +46,12 @@ class ModifyDialog extends JDialog {
 	
 	// 생성자는 컴포넌트들을 초기화하는 작업만 합니다.
 	public ModifyDialog(){
-		
 	}
+	
+	public ModifyDialog(AddressLogin aLogin) {
+		this.aLogin = aLogin;
+	}
+	
 	public ModifyDialog(JFrame frm) {
 		super(frm,true);
 		parent = frm;
@@ -250,7 +254,7 @@ class ModifyDialog extends JDialog {
 		/*
 		 * 아이디가 0보다 큰값이 아니면 입력모드 이다.	
 		 */
-		}else{ //////////////////////////////////////// 아이디가 null 존재하지 않으면 입력 모드
+		} else{ //////////////////////////////////////// 아이디가 null 존재하지 않으면 입력 모드
 			try {
 				JOptionPane.showMessageDialog(this, "입력이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);		
 				AddressVO vo = new AddressVO();	
@@ -270,12 +274,16 @@ class ModifyDialog extends JDialog {
 				ctrl.send(vo);
 				
 				if(abook != null) {
-					System.out.println("refreshData 호출 성공");
 				abook.refreshData(); // 입력이 성공하면 AddressBook 클래스의 새로고침(전체조회) 메소드 호출
-				}			
+				} 
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(this, "입력중 에러가 발생했습니다." + e,
-					"Error", JOptionPane.ERROR_MESSAGE);
+//				JOptionPane.showMessageDialog(this, "입력중 에러가 발생했습니다." + e,
+//					"Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, "입력하신 성명과 생년월일로 로그인 해주세요.",
+						"회원가입 완료", JOptionPane.PLAIN_MESSAGE);
+				this.dispose(); // 회원가입 완료 시 창닫기
+				aLogin.jtf_name.setText(""); // 창이 닫히면 로그인 텍스트필드 공백으로 초기화
+				aLogin.jpf_bday.setText("");
 			}			
 		}
 		setVisible(false);
