@@ -65,9 +65,10 @@ public class AddressBook extends JFrame {
 	private ModifyDialog mDialog;
 	private Font font;
 	private String path;
-
+	
 	// DB작업을 중개해줄 Controller 클래스
 	private AddressCtrl ctrl;
+	
 	public static AddressBook abook = null;
 	AddressVO [] vos = null;
 	
@@ -82,11 +83,11 @@ public class AddressBook extends JFrame {
 
     // 생성자는 컴포넌트들을 초기화합니다.
     public AddressBook() {
-        //initComponents();
+        //initComponents(); // 여기 주석풀면 전체조회 안됨.. 
     }
 
 	// 초기화 작업은 컴포넌트들의 값을 셋팅하고 배치합니다.
-    private void initComponents() {
+    public void initComponents() {
     	// DefaultTableModel을 상속받은 MyTableModel 클래스가 테이블의
     	// 데이타를 담당합니다.
 		myTableModel= new MyTableModel();
@@ -330,7 +331,7 @@ public class AddressBook extends JFrame {
 		myTableModel.addColumn("전화번호");
 		table.getColumnModel().getColumn(0).setWidth(500);
 
-    }
+    } ///////////////////////////////////////////////////////////// end of initComponents();
 
 	// DB연결 메뉴 선택시 작업을 정의합니다.
 	private void connectActionPerformed(ActionEvent evt) {

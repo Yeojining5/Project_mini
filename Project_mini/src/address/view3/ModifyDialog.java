@@ -37,14 +37,11 @@ class ModifyDialog extends JDialog {
 
 	private JButton btnOk;
 	private JButton btnCancel;
-	private JButton	btnSearch;
 
 	public AddressVO avo = null;
 	AddressBook abook = null;
+	AddressLogin aLogin = null;
 	private boolean isCancel;
-	
-	// AddressSearch 클래스에 ModifyDialog dialog를 파라미터로 받는 생성자가 존재함 > this사용 
-	AddressSearch search = new AddressSearch(this);
 
 	
 	// 생성자는 컴포넌트들을 초기화하는 작업만 합니다.
@@ -59,7 +56,7 @@ class ModifyDialog extends JDialog {
 	}
 
 	// 컴포넌트들을 설정하고 배치합니다.
-	private void initComponents() {
+	public void initComponents() { //////////////////////////////
 		//다이얼로그에 색상 정의할 때 사용
 		this.getContentPane().setBackground(Color.red);
 		// 데이터 칼럼명을 보여줄 레이블을 정의합니다.
@@ -114,16 +111,6 @@ class ModifyDialog extends JDialog {
 			}
 		});
 		
-		/////////////////// 주소찾기 버튼
-		btnSearch = new JButton("주소찾기");
-		btnSearch.setFont(font);
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				System.out.println("주소찾기 버튼");
-				btnSearchActionPerformed(evt);
-			}
-		});
-		
 		
 
 		panel = new JPanel();
@@ -135,7 +122,6 @@ class ModifyDialog extends JDialog {
 
 		labelAddr.setBounds(20, 45, 100,20);
 		txtAddress.setBounds(120,45, 150,20);
-		btnSearch.setBounds(280, 45, 90, 20); /////////
 
 		labelTel.setBounds(20,70, 100,20);
 		txtTel.setBounds(120,70, 150, 20);
@@ -162,7 +148,6 @@ class ModifyDialog extends JDialog {
 		panel.add(txtName);
 		panel.add(labelAddr);
 		panel.add(txtAddress);
-		panel.add(btnSearch);///
 		panel.add(labelTel);
 		panel.add(txtTel);
 		panel.add(labelRel);
@@ -209,6 +194,8 @@ class ModifyDialog extends JDialog {
 		this.set(title, editable);
 		this.setValue(vo);
 	}
+	
+
 
 	// 입력, 수정시는 칼럼값을 수정 가능하도록, 조회시는 불가능하게
 	// 셋팅하는 메쏘드입니다.
@@ -282,8 +269,10 @@ class ModifyDialog extends JDialog {
 				AddressCtrl ctrl = new AddressCtrl(vo);
 				ctrl.send(vo);
 				
+				if(abook != null) {
+					System.out.println("refreshData 호출 성공");
 				abook.refreshData(); // 입력이 성공하면 AddressBook 클래스의 새로고침(전체조회) 메소드 호출
-							
+				}			
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "입력중 에러가 발생했습니다." + e,
 					"Error", JOptionPane.ERROR_MESSAGE);
@@ -322,12 +311,6 @@ class ModifyDialog extends JDialog {
 		dispose();  // 창닫기
 	}
 	
-	private void btnSearchActionPerformed(ActionEvent evt) {
-		Object obj = evt.getSource();
-		if(obj == btnSearch) {
-		search.initDisplay();
-		}
-	}
 
 	// 각 컬럼의 값들을 설정하거나 읽어오는 getter/setter 메쏘드입니다.
 	public String getName() { return txtName.getText(); }
