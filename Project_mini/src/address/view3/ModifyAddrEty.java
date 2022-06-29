@@ -24,11 +24,11 @@ public class ModifyAddrEty {
 		System.out.println("ModifyAddrEty modify 호출 성공");
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("	UPDATE MKADDRTB                                   ");
-		sql.append("	   SET NAME = ?, address = ?, telephone = ?       ");
-		sql.append("	      ,gender = ?, relationship = ?, birthday = ? ");
-		sql.append("	      ,comments = ?, registedate = ?              ");
-		sql.append("	WHERE ID = ?                                      ");
+		sql.append("	UPDATE MKADDRTB                                              ");
+		sql.append("	   SET NAME = ?, address = ?, telephone = ? ,gender = ?      ");
+		sql.append("	      , relationship = ?, birthday = ? ,comments = ?         ");
+		sql.append("	      , registedate = to_char(sysdate, 'yyyy.mm.dd hh24:mi') ");
+		sql.append("	 WHERE ID = ?                                  			     ");
 		
 		try {
 			con = dbMgr.getConnection();
@@ -41,7 +41,7 @@ public class ModifyAddrEty {
 			ps.setString(++i, vo.getRelationship());
 			ps.setString(++i, vo.getBirthday());
 			ps.setString(++i, vo.getComments());
-			ps.setString(++i, vo.getRegistedate());
+			//ps.setString(++i, vo.getRegistedate()); // 수정일자는 sysdate를 통해 현재날짜를 가져오므로 주석처리함
 			ps.setInt(++i, vo.getId());
 			
 			if(ps.executeUpdate() < 1) {

@@ -12,7 +12,7 @@ public class AddressCtrl {
 	private static String _ALL = "selectall";
 
 	public AddressCtrl(AddressVO vo) {
-		this.inVO = vo;
+		this.inVO = vo; 
 	}
 
 	public AddressVO send(AddressVO vo) throws Exception {

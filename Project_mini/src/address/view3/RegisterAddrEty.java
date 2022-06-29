@@ -27,7 +27,7 @@ public class RegisterAddrEty {
 		sql.append(" INSERT INTO mkaddrtb ");
 		sql.append(" (name, address, telephone, gender, relationship, ");
 		sql.append("  birthday, comments, registedate, id) ");
-		sql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?, seq_mkaddrtb_id.nextval)");
+		sql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, to_char(sysdate, 'yyyy.mm.dd hh24:mi'), seq_mkaddrtb_id.nextval)");
 		try {
 			con = dbMgr.getConnection();
 			ps = con.prepareStatement(sql.toString());
@@ -39,7 +39,7 @@ public class RegisterAddrEty {
 			ps.setString(i++, vo.getRelationship());
 			ps.setString(i++, vo.getBirthday());
 			ps.setString(i++, vo.getComments());
-			ps.setString(i++, vo.getRegistedate());
+			//ps.setString(i++, vo.getRegistedate());
 			
 			if(ps.executeUpdate() < 1) {
 				String msg = "데이터 입력에 실패했습니다.";

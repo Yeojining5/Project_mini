@@ -2,6 +2,7 @@ package address.view3;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDateTime;
 
 import javax.swing.*;
 
@@ -228,7 +229,7 @@ class ModifyDialog extends JDialog {
 			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);		
 			try{
 				AddressVO vo = new AddressVO();	
-				vo.setCommand("update");
+				vo.setCommand("update"); 
 				
 				// 다이얼로그에 입력한 값 텍스트필드 메서드로 읽어오기
 				vo.setName(getName());
@@ -239,7 +240,7 @@ class ModifyDialog extends JDialog {
 				vo.setBirthday(getBirthDay());
 				vo.setComments(getComments());
 				vo.setRegistedate(getRegDate());
-				vo.setId(avo.getId()); ///////////////// 중요!
+				vo.setId(avo.getId()); ///////////////// 시퀀스로 생성된 Id 가져오기
 				
 				AddressCtrl ctrl = new AddressCtrl(vo);
 				ctrl.send(vo);
@@ -254,7 +255,7 @@ class ModifyDialog extends JDialog {
 		/*
 		 * 아이디가 0보다 큰값이 아니면 입력모드 이다.	
 		 */
-		} else{ //////////////////////////////////////// 아이디가 null 존재하지 않으면 입력 모드
+		} else{ //////////////////////////////////////// 아이디가 null, 존재하지 않으면 입력 모드
 			try {
 				JOptionPane.showMessageDialog(this, "입력이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);		
 				AddressVO vo = new AddressVO();	
@@ -279,7 +280,7 @@ class ModifyDialog extends JDialog {
 			} catch (Exception e) {
 //				JOptionPane.showMessageDialog(this, "입력중 에러가 발생했습니다." + e,
 //					"Error", JOptionPane.ERROR_MESSAGE);
-				JOptionPane.showMessageDialog(this, "입력하신 성명과 생년월일로 로그인 해주세요.",
+				JOptionPane.showMessageDialog(this, "회원가입이 완료되었습니다!\n성명과 생년월일로 로그인 해주세요.",
 						"회원가입 완료", JOptionPane.PLAIN_MESSAGE);
 				this.dispose(); // 회원가입 완료 시 창닫기
 				aLogin.jtf_name.setText(""); // 창이 닫히면 로그인 텍스트필드 공백으로 초기화

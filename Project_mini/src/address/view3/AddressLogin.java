@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
@@ -17,11 +19,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 
-public class AddressLogin extends JFrame implements ActionListener  {
+public class AddressLogin extends JFrame implements ActionListener, FocusListener  {
 	/////////////////////////////////////////////////////
 	/* 선언부 */
 	/////////////////////////////////////////////////////
@@ -30,30 +31,32 @@ public class AddressLogin extends JFrame implements ActionListener  {
 	ResultSet 		  rs	= null;
 	DBConnectionMgr   dbMgr = new DBConnectionMgr();
 	
+	String path = "src//images//address//";
 	String nickName="";
 	String imgPath="src\\images\\address\\";
-	JLabel jlb_name = new JLabel("     NAME");
-	JLabel jlb_bday = new JLabel("YYYYMMDD");
+	//JLabel jlb_name = new JLabel("     NAME");
+	//JLabel jlb_bday = new JLabel("YYYYMMDD");
+	
+	JLabel jlb_logo = new JLabel(); ////////////////////////////
+	ImageIcon icon = new ImageIcon(path+"logo4.png");
 
-	Font jl_font = new Font("Impact", Font.ITALIC, 26);
-	JTextField jtf_name = new JTextField("나신입");
-	JPasswordField jpf_bday = new JPasswordField("19900712");
-
-	JButton jbtn_login = new JButton(
-			new ImageIcon(imgPath+"login.png"));
+	Font jl_font1 = new Font("dubai", Font.PLAIN, 18);
+	Font jl_font2 = new Font("나눔고딕", Font.ITALIC, 13);
+	
+	JTextField jtf_name = new JTextField("User name (ex. 나신입)");
+	JTextField jpf_bday = new JTextField("YYYYMMDD (ex. 19900712)");
+	
+	JButton jbtn_login = new JButton("L o g i n");
 			//new ImageIcon("C:\\Users\\minkh\\Desktop\\practice\\dev_java\\src\\com\\Final\\image\\login.png"));
-	JButton jbtn_join = new JButton(
-			new ImageIcon(imgPath+"confirm.png"));
+	JButton jbtn_join = new JButton("S i g n  u p");
 			//new ImageIcon("C:\\Users\\minkh\\Desktop\\practice\\dev_java\\src\\com\\Final\\image\\co   nfirm.png"));
 
 	// JPanel에 쓰일 이미지아이콘
 	//ImageIcon ig = new ImageIcon("C:\\Users\\minkh\\Desktop\\practice\\dev_java\\src\\com\\Final\\image\\main.png");
-	ImageIcon ig = new ImageIcon(imgPath+"main.PNG");
+	ImageIcon ig = new ImageIcon(imgPath+"main2.PNG");
 	
 	ModifyDialog mDialog = null;
-	
 	AddressBook abook = null;
-	
 	MyTableModel myTableModel = null;;
 	
 	/////////////////////////////////////////////////////
@@ -85,8 +88,10 @@ public class AddressLogin extends JFrame implements ActionListener  {
 		/* 버튼과 텍스트필드 구성 */
 		jbtn_join.addActionListener(this);
 		jbtn_login.addActionListener(this);
+		jtf_name.addFocusListener(this);
+		jpf_bday.addFocusListener(this);
 		this.setLayout(null);
-		this.setTitle("주소록 데모 프로그램 로그인 ver.1");
+		this.setTitle("AddressBook Program Login");
 		this.setSize(350, 600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
@@ -96,27 +101,43 @@ public class AddressLogin extends JFrame implements ActionListener  {
 				System.exit(0);
 			}
 		});
-		// id 라인
-		jlb_name.setBounds(45, 200, 130, 40);
-		jlb_name.setFont(jl_font);
-		jtf_name.setBounds(200, 200, 100, 40);
-		this.add(jlb_name);
+//		 id 라인
+//		jlb_name.setBounds(45, 200, 130, 40);
+//		jlb_name.setFont(jl_font);
+		jtf_name.setBounds(70, 250, 200, 40);
+		jtf_name.setFont(jl_font2);
+		//this.add(jlb_name);
 		this.add(jtf_name);
 
-		// birthday 라인 (비밀번호 역할)
-		jlb_bday.setBounds(45, 240, 130, 40);
-		jlb_bday.setFont(jl_font);
-		jpf_bday.setBounds(200, 240, 100, 40);
-		this.add(jlb_bday);
+//		 birthday 라인 (비밀번호 역할)
+//		jlb_bday.setBounds(45, 240, 130, 40);
+//		jlb_bday.setFont(jl_font);
+		jpf_bday.setBounds(70, 300, 200, 40);
+		jpf_bday.setFont(jl_font2);
+		//this.add(jlb_bday);
 		this.add(jpf_bday);
 
 		// 로그인 버튼 라인
-		jbtn_login.setBounds(175, 285, 120, 40);
+		jbtn_login.setBounds(70, 350, 200, 40);
+		jbtn_login.setFont(jl_font1);
 		this.add(jbtn_login);
+		jbtn_login.setBorderPainted(true); // JButton의 외곽선 설정
+		jbtn_login.setContentAreaFilled(false); // JButton의 내용영역 채우기
+		jbtn_login.setFocusPainted(false); // JButton이 선택되었을때 생기는 테두리 설정
 
 		// 회원가입 버튼 라인
-		jbtn_join.setBounds(45, 285, 120, 40);
-		this.add(jbtn_join);		
+		jbtn_join.setBounds(70, 400, 200, 40);
+		jbtn_join.setFont(jl_font1);
+		this.add(jbtn_join);
+		jbtn_join.setBorderPainted(true);
+		jbtn_join.setContentAreaFilled(false);
+		jbtn_join.setFocusPainted(false);
+		
+		jlb_logo.setIcon(icon); //////////////////////////////////
+		jlb_logo.setBounds(60,60,220,173);
+		jlb_logo.setHorizontalAlignment(JLabel.CENTER);
+		this.add(jlb_logo);
+//		getContentPane().add(jlb_logo);
 		
 		
 	}
@@ -218,8 +239,23 @@ public class AddressLogin extends JFrame implements ActionListener  {
 				abook = new AddressBook(); 
 		        abook.initComponents();
 		        abook.setVisible(true);
-		        JOptionPane.showMessageDialog(this, name+"님 환영합니다!", "로그인 완료", JOptionPane.PLAIN_MESSAGE);
+		        JOptionPane.showMessageDialog(this, name+"님, 환영합니다!", "로그인 완료", JOptionPane.PLAIN_MESSAGE);
 			}
 		}
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) { ////////////// 텍스트필드에 포커스를 두면 공백으로 초기화
+		if(e.getSource() == jtf_name) {
+			jtf_name.setText("");
+		}
+		else if(e.getSource() == jpf_bday) {
+			jpf_bday.setText("");
+		}
+	}
+	@Override
+	public void focusLost(FocusEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

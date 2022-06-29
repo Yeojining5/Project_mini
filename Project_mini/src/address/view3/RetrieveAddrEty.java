@@ -64,7 +64,7 @@ public class RetrieveAddrEty {
 	
 	
 	/***************************************************************************
-	 * 회원 목록 보기 구현 - n건 조회
+	 * 회원 목록 전체 조회 구현(새로고침 시 재사용) - n건 조회
 	 * SELECT name, address, telephone, DECODE(gender,'1','남','여')
               , relationship, birthday, comments, registedate, id 
          FROM mkaddrtb
@@ -73,13 +73,15 @@ public class RetrieveAddrEty {
 	public AddressVO[] retrieve() {
 		System.out.println("RetrieveAddrEty retrieve() 호출 성공");		
 		AddressVO[] vos = null;
-		Vector v = new Vector(1,1);
+		Vector<AddressVO> vec = new Vector<>( ); // AddressVO 타입의 Vector 생성(초기화값 생략())
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT name, address, telephone, DECODE(gender,'1','남','여')  ");
-		sql.append("        , relationship, birthday, comments, registedate, id    ");
-		sql.append("  FROM mkaddrtb                                                ");
-		sql.append("  ORDER BY id desc                                             ");
+		sql.append("SELECT name, address, telephone, DECODE(gender,'1','남','여') AS gender ");
+		sql.append("        , relationship, birthday, comments, registedate, id             ");
+		sql.append("  FROM mkaddrtb                                                         ");
+		sql.append("  ORDER BY id desc                                             			");
+		
+		AddressVO vo = null;
 		
 		try {
 			con = dbMgr.getConnection();
@@ -87,15 +89,23 @@ public class RetrieveAddrEty {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				//vos = new AddressVO[8];
-				AddressVO vo = new AddressVO(rs.getString(1), rs.getString(2), rs.getString(3)
-							      , rs.getString(4), rs.getString(5), rs.getString(6)
-								  , rs.getString(7), rs.getString(8), rs.getInt(9));
-				v.addElement(vo);
+				vo = new AddressVO();
+				vo.setName(rs.getString("name"));
+				vo.setAddress(rs.getString("address"));
+				vo.setTelephone(rs.getString("telephone"));
+				vo.setGender(rs.getString("gender"));
+				vo.setRelationship(rs.getString("relationship"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setComments(rs.getString("comments"));
+				vo.setRegistedate(rs.getString("registedate"));
+				vo.setId(rs.getInt("id"));// 커서를 움직여서 가져온 오라클 데이터를 AddressVO의 메소드를 통해 값 세팅
+				vec.add(vo); // AddressVO vo에 담긴 값을 Vector에 추가한다.
+				
+				
 			}
-			vos = new AddressVO[v.size()];
-			v.copyInto(vos);
 			
+			vos = new AddressVO[vec.size()]; // Vector의 데이터 개수를 알 수 있는 메소드를 통해 배열 생성
+			vec.copyInto(vos); // copyInto() 메소드를 통해 배열로 복사(변환)
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

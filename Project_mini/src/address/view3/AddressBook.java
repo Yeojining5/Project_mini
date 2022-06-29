@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -66,11 +68,14 @@ public class AddressBook extends JFrame {
 	private Font font;
 	private String path;
 	
+	public LocalDateTime now;
+	
 	// DB작업을 중개해줄 Controller 클래스
 	private AddressCtrl ctrl;
 	
 	public static AddressBook abook = null;
 	AddressVO [] vos = null;
+	
 	
 	
 	// 메인 메쏘드는 AddressBook의 인스턴스를 생성하고 보여주는 일만 합니다.
@@ -126,12 +131,15 @@ public class AddressBook extends JFrame {
         JTableHeader jth = new JTableHeader();
         jScrollPane1.getViewport().setBackground(Color.white);
 
-		labelTimer = new JLabel("현재 시간");
+		
+        now = LocalDateTime.now();
+		String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy년 mm월 dd일 hh시 mm분 ss초"));
+		labelTimer = new JLabel("접속 시간 : "+formatedNow); ////////////////////////////// 현재 시간
 		labelTimer.setFont(font);
 		panelTimer = new JPanel();
 		font= new Font("굴림",0, 12);
 		path = "src//images//address//";
-
+		
 
 		// About 화면을 출력할 대화상자 정의
 		optionDlg = new JOptionPane();
@@ -303,6 +311,7 @@ public class AddressBook extends JFrame {
         table.setSelectionBackground(Color.YELLOW); // 테이블 데이터 선택 시 색 변하게 하기
         table.setSelectionForeground(Color.BLUE); // 테이블 데이터 선택 시 글자색 변하게 하기
         table.setFont(font);
+        
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() >= 2) {
@@ -330,6 +339,7 @@ public class AddressBook extends JFrame {
 		table.getColumnModel().getColumn(0).setWidth(800);
 		myTableModel.addColumn("전화번호");
 		table.getColumnModel().getColumn(0).setWidth(500);
+		
 
     } ///////////////////////////////////////////////////////////// end of initComponents();
 
@@ -496,10 +506,10 @@ public class AddressBook extends JFrame {
 		
 			for (int i = 0; i < vos.length; i++) {
 				Vector<Object> oneRow = new Vector<>();
-				oneRow.addElement(vos[i].getId());
-				oneRow.addElement(vos[i].getName());
-				oneRow.addElement(vos[i].getAddress());
-				oneRow.addElement(vos[i].getTelephone());			
+				oneRow.add(vos[i].getId());
+				oneRow.add(vos[i].getName());
+				oneRow.add(vos[i].getAddress());
+				oneRow.add(vos[i].getTelephone());			
 				myTableModel.addRow(oneRow);
 				}
 		}/////////////////////////////// end of refreshData()
