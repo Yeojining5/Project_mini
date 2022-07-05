@@ -9,9 +9,9 @@ import java.util.Vector;
 public class RetrieveAddrEty {
 	
 	DBConnectionMgr 	dbMgr 	= new DBConnectionMgr();
-	Connection 			con 	= null;// 연결통로
-	PreparedStatement 	pstmt 	= null;// DML구문 전달하고 오라클에게 요청
-	ResultSet 			rs		= null;// 조회경우 커서를 조작 필요
+	Connection 			con 	= null; // 연결통로
+	PreparedStatement 	pstmt 	= null; // DML구문 전달하고 오라클에게 요청
+	ResultSet 			rs		= null; // 조회경우 커서를 조작 필요 
 	
 	/***************************************************************************
 	 * 회원정보 중 상세보기 구현 - 1건 조회
@@ -38,8 +38,9 @@ public class RetrieveAddrEty {
 			con = dbMgr.getConnection();
 			pstmt = con.prepareStatement(sql.toString());
 			pstmt.setInt(1, id);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			rs = pstmt.executeQuery(); ////////////// select문, 결과집합을 가져올 때는 executeQuery 사용 / insert,Update,Delete 등의 조작을 할 때는 executeUpdate 사용
+			////////// 커서를 움직일 수 있는 도구인 rs가 next()문을 통해 다음 레코드를 가리키고 get메소드로 값을 요청한다.
+			if(rs.next()) { 
 				rVO = new AddressVO();
 				rVO.setName(rs.getString(1));
 				rVO.setAddress(rs.getString(2));

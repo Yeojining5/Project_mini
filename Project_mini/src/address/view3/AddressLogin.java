@@ -144,8 +144,8 @@ public class AddressLogin extends JFrame implements ActionListener, FocusListene
 	
 	/*******************************************************************
 	 * 로그인 구현
-	 * @param name - 사용자가 입력한 이름 받아오기
-	 * @param birthday - 사용자가 입력한 생년월일 받아오기(비밀번호 역할)
+	 * @param name - 사용자가 입력한 이름 받아오기 (아이디 역할)
+	 * @param birthday - 사용자가 입력한 생년월일 받아오기 (비밀번호 역할)
 	 * @return id - 사용자 아이디 (시퀀스를 통해 자동 생성됨)
 	 *******************************************************************/
 	
@@ -235,7 +235,7 @@ public class AddressLogin extends JFrame implements ActionListener, FocusListene
 				return;
 			}
 			else {
-				this.dispose(); // 이름이 있다면 로그인창을 닫아라
+				this.dispose(); // 이름이 있다면 로그인창을 닫아라 +  AddressBook 호출!!
 				abook = new AddressBook(); 
 		        abook.initComponents();
 		        abook.setVisible(true);

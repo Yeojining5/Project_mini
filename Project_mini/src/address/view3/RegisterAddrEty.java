@@ -30,7 +30,7 @@ public class RegisterAddrEty {
 		sql.append(" VALUES (?, ?, ?, ?, ?, ?, ?, to_char(sysdate, 'yyyy.mm.dd hh24:mi'), seq_mkaddrtb_id.nextval)");
 		try {
 			con = dbMgr.getConnection();
-			ps = con.prepareStatement(sql.toString());
+			ps = con.prepareStatement(sql.toString());  ////////// ?를 채워주는 역할 
 			int i =1;
 			ps.setString(i++, vo.getName());
 			ps.setString(i++, vo.getAddress());

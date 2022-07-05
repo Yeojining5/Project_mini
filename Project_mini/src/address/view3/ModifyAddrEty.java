@@ -41,7 +41,7 @@ public class ModifyAddrEty {
 			ps.setString(++i, vo.getRelationship());
 			ps.setString(++i, vo.getBirthday());
 			ps.setString(++i, vo.getComments());
-			//ps.setString(++i, vo.getRegistedate()); // 수정일자는 sysdate를 통해 현재날짜를 가져오므로 주석처리함
+			//ps.setString(++i, vo.getRegistedate()); // 등록날짜는 sysdate를 통해 현재날짜를 가져오도록 하였으므로 주석처리함
 			ps.setInt(++i, vo.getId());
 			
 			if(ps.executeUpdate() < 1) {

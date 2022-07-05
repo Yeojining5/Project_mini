@@ -78,7 +78,7 @@ public class AddressBook extends JFrame {
 	
 	
 	
-	// 메인 메쏘드는 AddressBook의 인스턴스를 생성하고 보여주는 일만 합니다.
+	// 메인 메소드는 AddressBook의 인스턴스를 생성하고 보여주는 일만 합니다.
     public static void main(String args[]) {
     	JFrame.setDefaultLookAndFeelDecorated(true);
         abook = new AddressBook();
@@ -88,7 +88,7 @@ public class AddressBook extends JFrame {
 
     // 생성자는 컴포넌트들을 초기화합니다.
     public AddressBook() {
-        //initComponents(); // 여기 주석풀면 전체조회 안됨.. 
+        //initComponents(); // 여기 주석풀면 전체조회 안됨...... 
     }
 
 	// 초기화 작업은 컴포넌트들의 값을 셋팅하고 배치합니다.
@@ -143,8 +143,9 @@ public class AddressBook extends JFrame {
 
 		// About 화면을 출력할 대화상자 정의
 		optionDlg = new JOptionPane();
+		
 		// 입력, 수정, 조회에 사용할 화면정의
-        mDialog = new ModifyDialog(this);
+        mDialog = new ModifyDialog(this);  ////////this는 AddressBook 자기 자신. ModifyDialog 생성자에 자기 자신의 객체를 전달함.
         mDialog.setVisible(false);
 
         // DB연결 메뉴아이템
@@ -391,7 +392,8 @@ public class AddressBook extends JFrame {
 				ctrl.send(newVo);
 				
 				// public void set(String title, boolean editable, AddressVO vo, AddressBook abook)
-				// 상세 조회는 조회만 가능하도록 editable을 false로 준다.
+				
+				////////////// 상세 조회는 조회만 가능하도록 editable을 false로 준다.
 				mDialog.set("상세조회", false, newVo, abook); 
 				mDialog.setVisible(true);
 				
@@ -404,7 +406,7 @@ public class AddressBook extends JFrame {
 	// 입력 메뉴나 입력 아이콘 선택시 작업을 정의합니다.
 	private void addActionPerformed(ActionEvent evt) {
 		System.out.println("입력하기");	
-		mDialog.set("입력", true, null,abook);
+		mDialog.set("입력", true, null,abook);   ////////////////////// 데이터가 없는 입력창이므로 AddressVO는 null을 넘겨서 mDialog호출
 		mDialog.setVisible(true);
 	}
 
@@ -433,7 +435,7 @@ public class AddressBook extends JFrame {
 								             ,vos[i].getRegistedate(), vos[i].getId());
 					}
 				}
-				mDialog.set("수정", true, newVo, abook);
+				mDialog.set("수정", true, newVo, abook); ////////////// DefaultTableModel에 입력되었던 값을 newVO에 담아 넘겨서 mDialog호출
 				mDialog.setVisible(true);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "데이터를 가져오는 중 발생했습니다."+e.toString(),"Error", JOptionPane.ERROR_MESSAGE);
