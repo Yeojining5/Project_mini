@@ -29,7 +29,7 @@
 
 ## 3. 설계 과정
 
-### 1) Oracle DB 설계 <br> * 데이터 모델링과 Oracle 시퀀스 생성(ID 번호 1씩 증가)
+### 1) Oracle DB 설계 <br>  ◼ 데이터 모델링과 Oracle 시퀀스 생성(ID 번호 1씩 증가)
 ![DBERD](https://user-images.githubusercontent.com/99080986/177373122-5f73554e-007b-4702-b541-fcab477ca2d3.JPG)
 ![DB](https://user-images.githubusercontent.com/99080986/177373396-4ade51b2-b14b-4030-be80-fe75a3157428.JPG)
 
@@ -61,10 +61,23 @@
 | **삭제**<br>(DeleteAddrEty)             | * Delete문을 통한 회원 정보 삭제 구현 |
 | **전체, 상세조회**<br>(RetrieveAddrEty) | * 회원정보 중 상세보기 구현 <br> * 회원 목록 전체 조회 구현(새로고침 시 재사용) |
 
+![회원등록](https://user-images.githubusercontent.com/99080986/177595995-0ac95fb5-4f41-4405-b490-281b2da6b6d0.JPG) <br>
+☝ **RegisterAddrEty 입력 담당 클래스의 회원등록 구현 코드** <br> **등록날짜와 ID(시퀀스)는 사용자에게 입력받지 않고 SQL문을 통해 자동 생성되도록 구성**
+
 
 <br>
 
 ## 5. GUI 화면
+![회원가입](https://user-images.githubusercontent.com/99080986/177594463-b8b5c8af-1bd8-4df4-8821-3fbf33fb8137.JPG)
+![로그인완료](https://user-images.githubusercontent.com/99080986/177595735-4fb6700f-d65e-4745-90f8-14c4f4cc4ad3.JPG)
+![전체조회](https://user-images.githubusercontent.com/99080986/177594652-2f8a6ab0-2a4e-4ba6-bd71-e31af5c1ffb5.JPG)
+![상세조회](https://user-images.githubusercontent.com/99080986/177594680-fffadb6f-6229-40f1-9eb2-51ef6daa7ded.JPG)
+![입력](https://user-images.githubusercontent.com/99080986/177594716-d7675655-b8b0-446a-99a6-cc9527429912.JPG)
+![수정결과](https://user-images.githubusercontent.com/99080986/177595203-62dec250-c520-4d0b-a7fc-a92f1bb52be4.JPG)
+![삭제](https://user-images.githubusercontent.com/99080986/177595235-c7a24b10-be01-4e5b-b757-03ff02830d8c.JPG)
+
+
+
 
 <br>
 
