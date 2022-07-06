@@ -31,7 +31,8 @@
 
 ### 1) Oracle DB 설계 <br>  ◼ 데이터 모델링과 Oracle 시퀀스 생성(ID 번호 1씩 증가)
 ![DBERD](https://user-images.githubusercontent.com/99080986/177373122-5f73554e-007b-4702-b541-fcab477ca2d3.JPG)
-![DB](https://user-images.githubusercontent.com/99080986/177373396-4ade51b2-b14b-4030-be80-fe75a3157428.JPG)
+![DBSequence](https://user-images.githubusercontent.com/99080986/177606077-c0d8e5bc-fb5b-4cdd-adb6-ddb5a88bcf42.JPG)
+
 
 <br>
 
