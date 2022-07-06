@@ -66,6 +66,11 @@ public class AddressLogin extends JFrame implements ActionListener, FocusListene
 	public AddressLogin(){
 		initDisplay();
 	}
+	
+//	public AddressLogin(AddressBook abook) {
+//		this.abook = abook;
+//	}
+	
 
 	/////////////////////////////////////////////////////
 	/* jpanal 오버라이드 */
@@ -236,9 +241,10 @@ public class AddressLogin extends JFrame implements ActionListener, FocusListene
 			}
 			else {
 				this.dispose(); // 이름이 있다면 로그인창을 닫아라 +  AddressBook 호출!!
-				abook = new AddressBook(); 
-		        abook.initComponents();
-		        abook.setVisible(true);
+				JFrame.setDefaultLookAndFeelDecorated(true);
+				abook = new AddressBook();
+		        abook.initComponents(); // AddressBook 화면 보이게
+		        abook.setVisible(true); // AddressBook 화면 보이게
 		        JOptionPane.showMessageDialog(this, name+"님, 환영합니다!", "로그인 완료", JOptionPane.PLAIN_MESSAGE);
 			}
 		}

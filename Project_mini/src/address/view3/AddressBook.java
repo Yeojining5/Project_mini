@@ -133,7 +133,7 @@ public class AddressBook extends JFrame {
 
 		
         now = LocalDateTime.now();
-		String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy년 mm월 dd일 hh시 mm분 ss초"));
+		String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 hh시 mm분 ss초"));
 		labelTimer = new JLabel("접속 시간 : "+formatedNow); ////////////////////////////// 현재 시간
 		labelTimer.setFont(font);
 		panelTimer = new JPanel();
@@ -456,23 +456,28 @@ public class AddressBook extends JFrame {
 			return;
 		} else {
 			try {
-				JOptionPane.showMessageDialog(this, "선택한 데이터를 삭제하시겠습니까?","INFO", JOptionPane.INFORMATION_MESSAGE);
-				// 테이블에서 선택된 컬럼의 id를 읽어옵니다.
-				Integer id = Integer.parseInt
-				(myTableModel.getValueAt(index[0], 0).toString());				
-				AddressVO newVo = null;
-				for(int i=0;i<vos.length;i++) {  //AddressVO [] vos
-					if(id == vos[i].getId()) {
-						newVo = new AddressVO(vos[i].getName(),vos[i].getAddress(),vos[i].getTelephone()
-								             ,vos[i].getGender(),vos[i].getRelationship(),vos[i].getBirthday()
-								             ,vos[i].getComments(),vos[i].getRegistedate(), vos[i].getId());
-						newVo.setCommand("delete");
+				int choose = JOptionPane.showConfirmDialog(this, "선택한 데이터를 삭제하시겠습니까?","INFO", JOptionPane.YES_NO_OPTION);
+				if(choose==JOptionPane.YES_OPTION) {   ///////////////////////////////// yes 옵션 선택 시 삭제 진행
+					// 테이블에서 선택된 컬럼의 id를 읽어옵니다.
+					Integer id = Integer.parseInt
+					(myTableModel.getValueAt(index[0], 0).toString());				
+					AddressVO newVo = null;
+					for(int i=0;i<vos.length;i++) {  //AddressVO [] vos
+						if(id == vos[i].getId()) {
+							newVo = new AddressVO(vos[i].getName(),vos[i].getAddress(),vos[i].getTelephone()
+									             ,vos[i].getGender(),vos[i].getRelationship(),vos[i].getBirthday()
+									             ,vos[i].getComments(),vos[i].getRegistedate(), vos[i].getId());
+							newVo.setCommand("delete");
+						}
 					}
+					ctrl = new AddressCtrl(newVo);
+					ctrl.send(newVo);
+					
+					refreshData(); // 삭제 성공하면 새로고침(전체조회) 메소드 호출
+					
+				} else { /////////////////////////////// no 옵션 선택 시 삭제 수행하지 않음
+					return;
 				}
-				ctrl = new AddressCtrl(newVo);
-				ctrl.send(newVo);
-				
-				refreshData(); // 삭제 성공하면 새로고침(전체조회) 메소드 호출
 				
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "데이터를 가져오는 중 발생했습니다."+e.toString(),"Error", JOptionPane.ERROR_MESSAGE);
@@ -500,7 +505,6 @@ public class AddressBook extends JFrame {
 		ctrl = new AddressCtrl(vo);	// 전체조회의 경우 ROW의 숫자가 여러개 이므로 배열에 담음
 		// Controller에서 넘겨 받은 전체 데이터를 테이블에 셋팅합니다.
 		vos = ctrl.send();	
-		
 		
 		while(myTableModel.getRowCount() > 0) { //기존에 조회된 결과 즉 목록을 삭제하기
 			myTableModel.removeRow(0); // 파라미터에 0을 주어서 테이블의 인덱스가 바뀌는 문제를 해결함

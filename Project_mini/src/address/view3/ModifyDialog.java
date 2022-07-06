@@ -40,13 +40,17 @@ class ModifyDialog extends JDialog {
 
 	public AddressVO avo = null;
 	AddressBook abook = null;
-	AddressLogin aLogin = null;
+	AddressLogin aLogin = null; 
 	private boolean isCancel;
 
 	
 	// 생성자는 컴포넌트들을 초기화하는 작업만 합니다.
 	public ModifyDialog(){
 	}
+	
+//	public ModifyDialog(AddressBook abook) {
+//		this.abook = abook;
+//	}
 	
 	public ModifyDialog(AddressLogin aLogin) {
 		this.aLogin = aLogin;
@@ -226,6 +230,7 @@ class ModifyDialog extends JDialog {
 		// public AddressVO avo = null; // AddressBook에서 전달받은 avo
 		if(avo !=null){ //////////////////////////////// 아이디가 null이 아님 = 존재하면 수정 모드
 			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다.","INFO", JOptionPane.INFORMATION_MESSAGE);		
+			System.out.println("abook ctrl 이전 출력 : "+abook);
 			try{
 				AddressVO vo = new AddressVO();	
 				vo.setCommand("update"); 
@@ -243,6 +248,9 @@ class ModifyDialog extends JDialog {
 				
 				AddressCtrl ctrl = new AddressCtrl(vo);
 				ctrl.send(vo);
+				
+				System.out.println(vo);
+				System.out.println("abook ctrl 이후 출력 : "+abook);
 				
 				if(abook != null) {
 					abook.refreshData(); // 수정이 성공하면 AddressBook 클래스의 새로고침(전체조회) 메소드 호출
