@@ -86,4 +86,4 @@
 ## 6. 사용 기술 및 개발 환경
 
 Back-end   `java` `Eclipse` `JDBC` <br>
-Server  `Oracle` `Toad`
+DB  `Oracle` `Toad`
